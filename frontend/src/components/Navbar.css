@@ -1,0 +1,83 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
+.topnav {
+    overflow: hidden;
+    background-color: #7D2AE8;
+    height: 3.5rem;
+    font-family: Arial;
+    z-index: 36456;
+  }
+
+  .profile {
+    border-radius: 50%;
+    float: right;
+  }
+  
+  .topnav a {
+    float: right;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 16px 16px;
+    text-decoration: none;
+  }
+  
+  .topnav .icon {
+    display: none;
+  }
+  
+  
+  .topnav a:hover, .dropdown:hover .dropbtn {
+    /* background-color: whitesmoke; */
+  }
+  
+  .dropdown-content a:hover {
+    /* background-color: rgb(221, 241, 248); */
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .topnav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+    width: 300px;
+
+  }
+
+  #title{
+    float:left;
+  }
+
+  .topnav .search-container {
+    float: right;
+    border-radius: 5px;
+    /* padding-right: 50%; */
+  }
+
+  .topnav .search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .topnav a.active {
+    background-color: #2196F3;
+    color: white;
+  }
+  
+  .profile {
+    height: 2.8rem;
+    width: auto;
+    padding: 3px;
+    cursor: pointer;
+  }
