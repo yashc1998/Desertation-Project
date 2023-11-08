@@ -20,6 +20,15 @@ export const loadUser = () => async (dispatch) => {
 
   try {
     const res = await axios.get(BACKEND_URI + "/api/auth");
+    console.log("INSTRUCTOR LOGIN: ", res.data)
+
+    if(res.data.user.approved === false){
+      dispatch({
+        type: LOGIN_FAIL,
+      });
+      dispatch(setAlert("Instructor not approved yet!!!", "danger"))
+      return;
+    }
     dispatch({
       type: USER_LOADED,
       payload: res.data,
@@ -93,6 +102,7 @@ export const login =
         res = await axios.post(BACKEND_URI + "/api/user/login", body);
       } else if (regType === "instructor") {
         res = await axios.post(BACKEND_URI + "/api/instructor/login", body);
+        
       }
 
       dispatch({

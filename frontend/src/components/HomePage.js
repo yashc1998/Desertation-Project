@@ -7,6 +7,7 @@ import HorizontalScroll from "./HorizontalScroll/HorizontalScroll";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URI } from "../config/constants";
+import Alert from "./UI/Alert/Alert";
 
 
 const HomePage = () => {
@@ -38,6 +39,7 @@ const HomePage = () => {
 
   return (
     <>
+    <Alert />
       <Navbar />
       <HeroImage />
       <section className="flex justify-center p-6 mx-auto w-full">

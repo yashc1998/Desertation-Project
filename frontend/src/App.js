@@ -6,12 +6,6 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import HomePageLearner from "./components/user/HomePageLearner";
 import Courses from "./components/Courses/Courses";
-
-//Redux
-import { Provider } from "react-redux";
-import store from "./store";
-import setAuthToken from "./utils/setAuthToken";
-import { loadUser } from "./actions/auth";
 import Search from "./components/Search/Search";
 import AddCourse from "./components/AddCourse/AddCourse";
 import Course from "./components/Course/Course";
@@ -21,6 +15,12 @@ import CourseLessonPlay from "./components/CourseLessonPlay/CourseLessonPlay";
 import QuizC from "./components/Quiz/QuizC";
 import Admin from "./components/Admin/Admin";
 import AdminLogin from "./components/Admin/AdminLogin";
+
+//Redux
+import { Provider } from "react-redux";
+import store from "./store";
+import setAuthToken from "./utils/setAuthToken";
+import { loadUser } from "./actions/auth";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);

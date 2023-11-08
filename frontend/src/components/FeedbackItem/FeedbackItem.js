@@ -1,5 +1,4 @@
 const FeedbackItem = ({ feedback, courseTitle }) => {
-  console.log("COURSE TITLE IN FEEDBACK", courseTitle)
   return (
     <>
       <div className="flex-none snap-center w-80 h-96 max-h-96 overflow-auto no-scrollbar  snap-always max-w-full mr-8 md:pb-4 border shadow-md hover:shadow-xl bg-gray-300">

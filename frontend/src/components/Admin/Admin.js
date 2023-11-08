@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URI } from "../../config/constants";
 
-
 const Admin = () => {
   const [instructors, setInstructors] = useState([]);
+  const navigate = useNavigate();
+
+  if (!localStorage.getItem("adminLogin")) {
+    navigate("/adminlogin");
+  }
 
   const getInstructorForApprovals = async () => {
     try {
@@ -23,8 +27,13 @@ const Admin = () => {
   }, []);
 
   const onRefreshClick = () => {
-    getInstructorForApprovals()
-  }
+    getInstructorForApprovals();
+  };
+
+  const onAdminLogout = () => {
+    localStorage.removeItem("adminLogin");
+    navigate("/adminlogin");
+  };
 
   const approveClickHandler = async (instructorId) => {
     console.log("INSTRUCTOR_ID: ", instructorId);
@@ -62,7 +71,31 @@ const Admin = () => {
             </div>
 
             <div className="flex items-center mt-4 gap-x-3">
-              <button onClick={onRefreshClick} className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto ">
+              <NavLink
+                to="/"
+                className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                  />
+                </svg>
+
+                <span>Home</span>
+              </NavLink>
+              <button
+                onClick={onRefreshClick}
+                className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -79,6 +112,27 @@ const Admin = () => {
                 </svg>
 
                 <span>Refresh</span>
+              </button>
+              <button
+                onClick={onAdminLogout}
+                className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                  />
+                </svg>
+
+                <span>Logout</span>
               </button>
             </div>
           </div>

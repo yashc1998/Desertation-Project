@@ -54,6 +54,11 @@ const Register = ({ register, setAlert, isAuthenticated }) => {
       instructorSkills,
     } = registerFormData;
 
+    if(registerFormData.password.length < 6) {
+      setAlert('Password Length should be greater than 6', 'danger');
+      return;
+    }
+
     if (registerFormData.password !== registerFormData.confirmPassword) {
       setConfirmPasswordError(true);
       setAlert('Confirm Password not same', 'danger');
@@ -100,6 +105,10 @@ const Register = ({ register, setAlert, isAuthenticated }) => {
               {/* <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Register
                 </h1> */}
+                <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Register
+              </h1>
+              <hr />
               <form
                 className="space-y-4 md:space-y-6"
                 onSubmit={formSubmitHandler}

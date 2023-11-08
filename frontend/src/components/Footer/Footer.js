@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="bg-white dark:bg-gray-900 border-t-white border-1">
@@ -23,9 +25,14 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <a href="/" className="hover:underline">
+                  <NavLink to="/" className="hover:underline">
                     Learn2Lead
-                  </a>
+                  </NavLink>
+                </li>
+                <li className="mb-4">
+                  <NavLink to="/adminlogin" className="hover:underline">
+                    Admin
+                  </NavLink>
                 </li>
               </ul>
             </div>

@@ -1,20 +1,20 @@
 import Footer from "./Footer/Footer";
 import "./Login.css";
 import Navbar from "./Navbar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../actions/auth";
 import Alert from "./UI/Alert/Alert";
 import { setAlert } from "../actions/alert";
 import { useNavigate } from "react-router-dom";
-import { BACKEND_URI } from "../config/constants";
 
 
-const Login = ({ login, setAlert, isAuthenticated }) => {
+const Login = ({ login, setAlert,user, isAuthenticated }) => {
   const [isInstructorLogin, setIsInstructorLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const emailRef = useRef();
 
   const navigate = useNavigate();
 
@@ -26,10 +26,8 @@ const Login = ({ login, setAlert, isAuthenticated }) => {
     e.preventDefault();
     let regType;
     if (isInstructorLogin) {
-      console.log("Instructor Login");
       regType = "instructor";
     } else {
-      console.log("Student Login");
       regType = "learner";
     }
 
@@ -45,10 +43,13 @@ const Login = ({ login, setAlert, isAuthenticated }) => {
   };
 
   useEffect(() => {
+    console.log("LOGIN:", user)
     if (isAuthenticated) {
       console.log(isAuthenticated);
       navigate("/");
     }
+
+    emailRef.current.focus();
   }, [isAuthenticated]);
 
   return (
@@ -77,6 +78,7 @@ const Login = ({ login, setAlert, isAuthenticated }) => {
                   <input
                     type="email"
                     name="email"
+                    ref={emailRef}
                     id="email"
                     onChange={(e) => onChange(e)}
                     value={email}
@@ -160,10 +162,12 @@ Login.propTypes = {
   login: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.authReducer.isAuthenticated,
+  user: state.authReducer.user,
 });
 
 export default connect(mapStateToProps, { login, setAlert })(Login);
