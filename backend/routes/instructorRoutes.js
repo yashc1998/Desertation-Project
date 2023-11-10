@@ -8,12 +8,14 @@ const {
   getInstructorData,
   getInstructors,
   updateApprovalStatus,
+  getInstructorCourses
 } = require("../controllers/instructorController");
 const auth = require("../middleware/auth");
 
 
 router.post("/updateapproval", updateApprovalStatus);
 
+router.get("/courses", getInstructorCourses);
 router.post(
   "/",
   [

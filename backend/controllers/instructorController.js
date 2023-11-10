@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 
 const Instructor = require("../models/instructorModel");
+const Course = require("../models/courseModel");
 
 // @desc    Register new Instructor
 // @router  /api/instructor
@@ -179,4 +180,22 @@ const updateApprovalStatus = async (req, res) => {
   }
 };
 
-module.exports = { registerInstructor, loginInstructor, getInstructorData, getInstructors, updateApprovalStatus };
+const getInstructorCourses = async (req, res) => {
+  try {
+    console.log(req.query.id)
+    const courses = await Course.find({ instructor: req.query.id });
+
+    if (courses) {
+      return res.status(200).json(courses);
+    } else {
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "Requested courses not found!!" }] });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+};
+
+module.exports = { registerInstructor, loginInstructor, getInstructorData, getInstructors, updateApprovalStatus, getInstructorCourses };

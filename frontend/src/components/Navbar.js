@@ -15,7 +15,7 @@ const navigation = [
   { name: "Courses", href: "/courses", type: 'both', current: false },
   { name: 'Add Course', href: '/addcourse', type: 'instructor', current: false },
   { name: 'My Courses', href: '/mycourses', type: 'learner', current: false },
-  { name: 'Created Courses', href: '#!', type: 'instructor', current: false },
+  { name: 'Created Courses', href: '/mycourses', type: 'instructor', current: false },
 ];
 
 function classNames(...classes) {

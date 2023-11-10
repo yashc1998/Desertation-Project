@@ -13,7 +13,7 @@ import setAuthToken from "../utils/setAuthToken";
 import { BACKEND_URI } from "../config/constants";
 
 // Load User
-export const loadUser = () => async (dispatch) => {
+export const loadUser = (type) => async (dispatch) => {
   if (localStorage.getItem("token")) {
     setAuthToken(localStorage.getItem("token"));
   }
@@ -22,11 +22,11 @@ export const loadUser = () => async (dispatch) => {
     const res = await axios.get(BACKEND_URI + "/api/auth");
     console.log("INSTRUCTOR LOGIN: ", res.data)
 
-    if(res.data.user.approved === false){
+    if(res.data.type === 'instructor' && res.data.user.approved === false){
       dispatch({
         type: LOGIN_FAIL,
       });
-      dispatch(setAlert("Instructor not approved yet!!!", "danger"))
+      dispatch(setAlert(type === "login" ? "Instructor not approved yet!!!" : "Request Submitted for approval", type === "login" ? "danger" : "success" ))
       return;
     }
     dispatch({
@@ -73,7 +73,7 @@ export const register =
         payload: { ...res.data, regType: regType },
       });
 
-      dispatch(loadUser());
+      dispatch(loadUser('register'));
     } catch (error) {
       console.error(error.response.data);
       const errors = error.response.data.errors;
@@ -110,7 +110,7 @@ export const login =
         payload: { ...res.data, regType: regType },
       });
 
-      dispatch(loadUser());
+      dispatch(loadUser('login'));
     } catch (err) {
       const errors = err.response.data.errors;
 

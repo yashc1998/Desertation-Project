@@ -25,7 +25,7 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
   const [enrolledCourseDetails, setEnrolledCourseDetails] = useState();
   const [currentCourseInstructor, setCurrentCourseInstructor] =
     useState("Instructor");
-  const [videoNavLinkTo, setVideNavLinkTo] = useState('');
+  const [videoNavLinkTo, setVideNavLinkTo] = useState('play');
   const [quizLength, setQuizLength] = useState(0);
   const courseId = useParams();
   const navigate = useNavigate();
@@ -38,8 +38,10 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
   }, [pathname]);
 
   useEffect(() => {
-    isEnrolled ? setVideNavLinkTo('play') : setVideNavLinkTo()
-  }, [isEnrolled])
+    if(userType === 'learner'){
+      !isEnrolled && setVideNavLinkTo()
+    }
+  }, [isEnrolled, userType])
 
   //Fetch current course details
   useEffect(() => {
