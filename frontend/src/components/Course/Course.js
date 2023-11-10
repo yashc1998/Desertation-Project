@@ -25,114 +25,38 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
   const [enrolledCourseDetails, setEnrolledCourseDetails] = useState();
   const [currentCourseInstructor, setCurrentCourseInstructor] =
     useState("Instructor");
+  const [videoNavLinkTo, setVideNavLinkTo] = useState('');
+  const [quizLength, setQuizLength] = useState(0);
   const courseId = useParams();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const videoLessons = [
-    {
-      id: "jh4b53jhvcjh32vc2j43v",
-      name: "Introduction to React JS",
-    },
-    {
-      id: "randomID1",
-      name: "Building User Interfaces with React",
-    },
-    {
-      id: "a1b2c3d4e5f6",
-      name: "State Management in React Applications",
-    },
-    {
-      id: "xyz12345",
-      name: "React Component Lifecycle",
-    },
-    {
-      id: "3a2b1c",
-      name: "Routing and Navigation in React",
-    },
-    {
-      id: "randomID5",
-      name: "Styling in React with CSS",
-    },
-    {
-      id: "1q2w3e4r",
-      name: "React Forms and Validation",
-    },
-    {
-      id: "s1234trt",
-      name: "Handling API Requests in React",
-    },
-    {
-      id: "r5a6n7d8o9mID8",
-      name: "Testing and Debugging React Applications",
-    },
-    {
-      id: "stateless123",
-      name: "Stateful and Stateless Components in React",
-    },
-    {
-      id: "rfc987",
-      name: "React Hooks and Functional Components",
-    },
-    {
-      id: "98765",
-      name: "Optimizing React Performance",
-    },
-    {
-      id: "auth123",
-      name: "Authentication in React Applications",
-    },
-    {
-      id: "1234react",
-      name: "Advanced Routing with React Router",
-    },
-    {
-      id: "context2023",
-      name: "React Context and Redux",
-    },
-    {
-      id: "project456",
-      name: "Real-world Projects with React",
-    },
-    {
-      id: "deploy2023",
-      name: "Deployment and Hosting React Apps",
-    },
-    {
-      id: "ssrreact",
-      name: "Server-side Rendering with React",
-    },
-    {
-      id: "best123",
-      name: "React Best Practices and Patterns",
-    },
-    {
-      id: "master123",
-      name: "Mastering React and Beyond",
-    },
-    {
-      id: "exploring55",
-      name: "Exploring React Ecosystem",
-    },
-  ];
 
   //To Scroll the window to the starting/top
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  useEffect(() => {
+    isEnrolled ? setVideNavLinkTo('play') : setVideNavLinkTo()
+  }, [isEnrolled])
+
   //Fetch current course details
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const courseRes = await axios.get(`${BACKEND_URI}/api/courses/${courseId.id}`, {
-          onUploadProgress: (progressEvent) => {
-            setIsLoading(true);
-          },
-        });
+        const courseRes = await axios.get(
+          `${BACKEND_URI}/api/courses/${courseId.id}`,
+          {
+            onUploadProgress: (progressEvent) => {
+              setIsLoading(true);
+            },
+          }
+        );
         setCourse(courseRes.data);
         checkIfUserEnrolledInCourse(courseRes.data._id);
         getCourseFeedbacks(courseRes.data._id);
+        getCourseQuiz(courseRes.data._id)
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -159,6 +83,23 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
       console.error(error);
     }
   };
+
+  /////////
+  //Get quizes for this course
+
+  const getCourseQuiz = async (courseId) => {
+    try {
+      const res = await axios.get(BACKEND_URI + "/api/quiz", {
+        params: {
+          courseId: courseId.id,
+        },
+      });
+      console.log("QUIZ DATA", res.data);
+      setQuizLength(res.data.length || 0)
+    } catch (error) {}
+  }
+
+  /////////
 
   //////////
 
@@ -215,7 +156,10 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
   };
 
   const courseButtonsClickHanler = (e) => {
-    if (!isAuthenticated) navigate("/login");
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
 
     switch (e.currentTarget.name) {
       case "editCourse":
@@ -233,7 +177,7 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
       case "takeQuiz":
         navigate(`/course/${course._id}/quiz`, {
           replace: false,
-          state: {course, type: e.currentTarget.name, user},
+          state: { course, type: e.currentTarget.name, user },
         });
         break;
       case "enroll":
@@ -338,7 +282,7 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
                   </button>
                 </div>
               )}
-              {isAuthenticated && (isEnrolled || userType === 'instructor') && (
+            {isAuthenticated && quizLength>0 && (isEnrolled || userType === "instructor") && (
               <>
                 <button
                   type="button"
@@ -346,7 +290,7 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
                   onClick={courseButtonsClickHanler}
                   className="inline-block mt-8 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-lg px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                 >
-                  Take Quiz 
+                  Take Quiz
                 </button>
               </>
             )}
@@ -428,10 +372,10 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
               <p className="text-2xl font-bold mb-4">Course Content</p>
               <ul className="bg-white rounded-lg shadow divide-y divide-gray-200">
                 {course &&
-                  course.videos &&
+                  course.videos && course.videos.length > 0 ?
                   course.videos.map((lesson, index) => {
                     return (
-                      <NavLink to="play" state={course}>
+                      <NavLink to={videoNavLinkTo} state={course}>
                         <li className="px-6 py-4">
                           <div className="flex justify-between">
                             <span className="">
@@ -465,7 +409,7 @@ const Course = ({ setAlert, isAuthenticated, user, userType }) => {
                         </li>
                       </NavLink>
                     );
-                  })}
+                  }) : <h2 className="px-6 py-4">No videos uploaded for this course</h2>}
               </ul>
             </div>
           </div>

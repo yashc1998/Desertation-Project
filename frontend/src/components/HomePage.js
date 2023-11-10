@@ -88,7 +88,7 @@ const HomePage = () => {
       {courseList && (
         <>
           <HorizontalScroll title="Popular Courses" items={courseList} />
-          <HorizontalScroll title="Your Interests" items={courseList} />
+          <HorizontalScroll title="Latest Courses" items={courseList} />
         </>
       )}
 

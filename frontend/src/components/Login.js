@@ -9,8 +9,7 @@ import Alert from "./UI/Alert/Alert";
 import { setAlert } from "../actions/alert";
 import { useNavigate } from "react-router-dom";
 
-
-const Login = ({ login, setAlert,user, isAuthenticated }) => {
+const Login = ({ login, setAlert, user, isAuthenticated }) => {
   const [isInstructorLogin, setIsInstructorLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,9 +42,7 @@ const Login = ({ login, setAlert,user, isAuthenticated }) => {
   };
 
   useEffect(() => {
-    console.log("LOGIN:", user)
     if (isAuthenticated) {
-      console.log(isAuthenticated);
       navigate("/");
     }
 
@@ -64,22 +61,11 @@ const Login = ({ login, setAlert,user, isAuthenticated }) => {
                 Sign in to your account
               </h1>
               <hr />
-              <form
-                className="space-y-4 md:space-y-6"
-                onSubmit={onLoginFormSubmitHandler}
+              <form className="space-y-4 md:space-y-6" onSubmit={onLoginFormSubmitHandler}
               >
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    ref={emailRef}
-                    id="email"
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                  <input type="email" name="email" ref={emailRef} id="email"
                     onChange={(e) => onChange(e)}
                     value={email}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

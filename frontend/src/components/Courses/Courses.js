@@ -40,9 +40,9 @@ const Courses = () => {
   const onCurrentPageChangeHandler = e => {
     let buttonName = e.currentTarget.name
     if(buttonName === 'previous'){
-      setCurrentPage((previousPage) => previousPage -1)
+      setCurrentPage((previousPage) => +(previousPage -1))
     }else if(buttonName === 'next'){
-      setCurrentPage((previousPage) => previousPage +1)
+      setCurrentPage((previousPage) => +(previousPage +1))
     }
     setCurrentPage(buttonName)
 
